@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+clang++ main.cpp Code.cpp -o assembler
