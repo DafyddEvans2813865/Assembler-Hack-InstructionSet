@@ -1,0 +1,26 @@
+#!/bin/zsh
+
+set -e
+
+test_dir="${0:A:h}"
+project_dir="${test_dir:h}"
+cd "$project_dir"
+
+./build
+
+run_test() {
+    local name="$1"
+    local source="Assembler/Tests/examples/${name}.asm"
+    local expected="Assembler/Tests/examples/${name}Test.hack"
+    local generated="Assembler/Tests/examples/${name}.hack"
+
+    echo "Testing ${name}..."
+    ./assembler.out "$source"
+    diff -u "$expected" "$generated"
+    echo "${name}: passed"
+}
+
+run_test "Add"
+run_test "Max"
+
+echo "All tests passed."
