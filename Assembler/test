@@ -6,7 +6,7 @@ test_dir="${0:A:h}"
 project_dir="${test_dir:h}"
 cd "$project_dir"
 
-./build
+Assembler/build
 
 run_test() {
     local name="$1"
@@ -15,7 +15,7 @@ run_test() {
     local generated="Assembler/Tests/examples/${name}.hack"
 
     echo "Testing ${name}..."
-    ./assembler.out "$source"
+    ./Assembler/assembler "$source"
     diff -u "$expected" "$generated"
     echo "${name}: passed"
 }
