@@ -117,3 +117,26 @@ void CodeWriter::writeArithmetic(const std::string &command)
         out << "@SP\nM=M+1\n";
     }
 }
+
+std::string CodeWriter::scopedLabel(const std::string &label)
+{
+    return currentFunction + "_" + label;
+}
+
+void CodeWriter::writeLabel(const std::string &label)
+{
+    out << "(" << scopedLabel(label) << ")" << "\n";
+}
+
+void CodeWriter::writeGoto(const std::string &label)
+{
+    out << "@" << scopedLabel(label) << "\n"
+        << "0;JMP\n";
+}
+
+void CodeWriter::writeIf(const std::string &label)
+{
+    popD();
+    out << "@" << scopedLabel(label) << "\n"
+        << "D;JNE" << "\n";
+}

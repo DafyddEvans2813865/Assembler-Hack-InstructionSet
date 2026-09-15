@@ -33,6 +33,12 @@ int main(int argc, char *argv[])
         CommandType t = parser.commandType();
         if (t == CommandType::ARITHMETIC)
             writer.writeArithmetic(parser.arg1());
+        else if (t == CommandType::LABEL)
+            writer.writeLabel(parser.arg1());
+        else if (t == CommandType::GOTO)
+            writer.writeGoto(parser.arg1());
+        else if (t == CommandType::IF)
+            writer.writeIf(parser.arg1());
         else
             writer.writePushPop(t, parser.arg1(), parser.arg2());
     }

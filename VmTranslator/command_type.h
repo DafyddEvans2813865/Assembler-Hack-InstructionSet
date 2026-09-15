@@ -4,5 +4,8 @@ enum class CommandType
 {
     ARITHMETIC,
     PUSH,
-    POP
+    POP,
+    LABEL,
+    GOTO,
+    IF
 };

@@ -17,8 +17,8 @@ run_test() {
 
     echo "Testing ${name}..."
     ./VmTranslator/vmtranslator "$source" "$generated"
-    diff -u <(awk '{ sub(/[[:space:]]+$/, ""); print }' "$expected") \
-        <(awk '{ sub(/[[:space:]]+$/, ""); print }' "$generated")
+    diff -u <(awk '!/^[[:space:]]*(\/\/|$)/ { sub(/[[:space:]]+$/, ""); print }' "$expected") \
+        <(awk '!/^[[:space:]]*(\/\/|$)/ { sub(/[[:space:]]+$/, ""); print }' "$generated")
     rm -f "$generated"
     echo "${name}: passed"
 }
@@ -27,5 +27,6 @@ trap 'rm -f VmTranslator/Tests/*.generated.asm(N)' EXIT
 
 run_test "Basic" "BasicTest"
 run_test "SimpleAdd" "SimpleAdd"
+run_test "BasicLoop" "BasicLoopTest"
 
 echo "All tests passed."

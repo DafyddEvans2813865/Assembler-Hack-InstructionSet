@@ -35,6 +35,12 @@ CommandType Parser::commandType()
         return CommandType::PUSH;
     if (first == "pop")
         return CommandType::POP;
+    if (first == "label")
+        return CommandType::LABEL;
+    if (first == "goto")
+        return CommandType::GOTO;
+    if (first == "if-goto")
+        return CommandType::IF;
     return CommandType::ARITHMETIC;
 }
 
