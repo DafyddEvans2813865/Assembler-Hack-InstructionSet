@@ -15,6 +15,8 @@ public:
     void writeLabel(const std::string &label);
     void writeGoto(const std::string &label);
     void writeIf(const std::string &label);
+    void writeFunction(const std::string &functionName, int nVars);
+    void writeCall(const std::string &functionName, int nArgs);
 
     void close();
 
@@ -25,7 +27,9 @@ private:
     std::string scopedLabel(const std::string &label);
 
     int labelCounter = 0;
+    int callCounter = 0;
 
     void pushD();
     void popD();
+    void pushPointerValue(const std::string &pointer);
 };

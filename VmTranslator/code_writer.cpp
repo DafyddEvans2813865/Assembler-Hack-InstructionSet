@@ -140,3 +140,46 @@ void CodeWriter::writeIf(const std::string &label)
     out << "@" << scopedLabel(label) << "\n"
         << "D;JNE" << "\n";
 }
+
+void CodeWriter::writeFunction(const std::string &functionName, int nVars)
+{
+    // entry point
+    currentFunction = functionName;
+    out << "(" << currentFunction << ")" << "\n";
+
+    // initialize nVars locals to 0.
+    for (int i = 0; i < nVars; i++)
+    {
+        out << "@" << 0 << "\nD=A\n";
+        pushD();
+    }
+}
+void CodeWriter::pushPointerValue(const std::string &pointer)
+{
+    out << "@" << pointer << "\nD=M\n";
+    pushD();
+}
+
+void CodeWriter::writeCall(const std::string &functionName, int nArgs)
+{
+
+    std::string returnLabel = functionName + "_" + std::to_string(callCounter); // fix this for me
+    callCounter++;
+
+    out << "@" << returnLabel << "\nD=A\n";
+    pushD();
+    // push LCL,ARG,THIS,THAT   — raw contents of the LCL pointer itself, no dereference
+    pushPointerValue("LCL");
+    pushPointerValue("ARG");
+    pushPointerValue("THIS");
+    pushPointerValue("THAT");
+
+    // 6. ARG = SP - 5 - nArgs
+    out << "@SP\nD=M\n@" << 5 + nArgs << "\nD=D-A\n@ARG\nM=D\n";
+    // 7. LCL = SP
+    out << "@SP\nD=M\n@LCL\nM=D\n";
+    // 8. goto functionName
+    out << "@" << functionName << "\n"
+        << "0;JMP\n";
+    out << "(" << returnLabel << ")" << "\n";
+}
