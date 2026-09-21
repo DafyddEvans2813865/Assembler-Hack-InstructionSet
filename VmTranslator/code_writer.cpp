@@ -183,3 +183,33 @@ void CodeWriter::writeCall(const std::string &functionName, int nArgs)
         << "0;JMP\n";
     out << "(" << returnLabel << ")" << "\n";
 }
+
+void CodeWriter::writeReturn()
+{
+    // endFrame (R13) = LCL
+    out << "@LCL\nD=M\n@R13\nM=D\n";
+
+    // retAddr (R14) = *(endFrame - 5)   -- MUST happen before ARG gets overwritten
+    out << "@R13\nD=M\n@5\nA=D-A\nD=M\n@R14\nM=D\n";
+
+    // *ARG = pop()   -- return value replaces arg 0
+    out << "@SP\nM=M-1\nA=M\nD=M\n@ARG\nA=M\nM=D\n";
+
+    // SP = ARG + 1
+    out << "@ARG\nD=M+1\n@SP\nM=D\n";
+
+    // THAT = *(endFrame - 1)
+    out << "@R13\nD=M\n@1\nA=D-A\nD=M\n@THAT\nM=D\n";
+
+    // THIS = *(endFrame - 2)
+    out << "@R13\nD=M\n@2\nA=D-A\nD=M\n@THIS\nM=D\n";
+
+    // ARG = *(endFrame - 3)
+    out << "@R13\nD=M\n@3\nA=D-A\nD=M\n@ARG\nM=D\n";
+
+    // LCL = *(endFrame - 4)
+    out << "@R13\nD=M\n@4\nA=D-A\nD=M\n@LCL\nM=D\n";
+
+    // goto retAddr  -- jump to the VALUE stored in R14, not to R14 itself
+    out << "@R14\nA=M\n0;JMP\n";
+}

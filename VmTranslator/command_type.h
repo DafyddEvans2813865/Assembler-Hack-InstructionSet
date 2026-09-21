@@ -7,5 +7,8 @@ enum class CommandType
     POP,
     LABEL,
     GOTO,
-    IF
+    IF,
+    FUNCTION,
+    CALL,
+    RETURN
 };

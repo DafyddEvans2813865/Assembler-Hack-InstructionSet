@@ -28,5 +28,6 @@ trap 'rm -f VmTranslator/Tests/*.generated.asm(N)' EXIT
 run_test "Basic" "BasicTest"
 run_test "SimpleAdd" "SimpleAdd"
 run_test "BasicLoop" "BasicLoopTest"
+run_test "SimpleFunction" "SimpleFunctionTest"
 
 echo "All tests passed."

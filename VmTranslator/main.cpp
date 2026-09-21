@@ -39,6 +39,12 @@ int main(int argc, char *argv[])
             writer.writeGoto(parser.arg1());
         else if (t == CommandType::IF)
             writer.writeIf(parser.arg1());
+        else if (t == CommandType::FUNCTION)
+            writer.writeFunction(parser.arg1(), parser.arg2());
+        else if (t == CommandType::CALL)
+            writer.writeCall(parser.arg1(), parser.arg2());
+        else if (t == CommandType::RETURN)
+            writer.writeReturn();
         else
             writer.writePushPop(t, parser.arg1(), parser.arg2());
     }
